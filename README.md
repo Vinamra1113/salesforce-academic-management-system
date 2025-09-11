@@ -75,7 +75,7 @@ Identifying stakeholders and defining their roles is essential for designing per
 | Admin (HOD/Coordinator) | Manages data, assigns faculty, generates reports | Full Access |
 | Faculty                | Adds attendance, updates marks, posts announcements | Edit Access |
 | Student                | Views attendance, marks, and announcements | Read-Only Access |
-| System Developer (You) | Builds and maintains the Salesforce system | Developer Access |
+| System Developer       | Builds and maintains the Salesforce system | Developer Access |
 
 ---
 
