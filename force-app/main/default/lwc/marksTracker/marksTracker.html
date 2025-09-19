@@ -1,0 +1,74 @@
+<template>
+    <lightning-card icon-name="standard:assessment">
+        <template if:true={isFacultyView}>
+            <h2 slot="title" class="slds-card__header-title">Marks Entry Tracker</h2>
+            <div slot="actions">
+                <lightning-button label="Save Marks" variant="brand" onclick={handleSaveMarks} disabled={isLoading}></lightning-button>
+            </div>
+            
+            <div class="slds-p-horizontal_small slds-p-bottom_small">
+                <lightning-card variant="Narrow" title="Exam Details" icon-name="utility:filter">
+                    <div class="slds-p-around_medium">
+                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                            <lightning-layout-item size="12" medium-device-size="5" padding="around-small">
+                                <lightning-combobox name="subject" label="Select Subject" value={selectedSubject} placeholder="-- Select Subject --" options={subjectOptions} onchange={handleFilterChange}></lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="5" padding="around-small">
+                                <lightning-combobox name="examType" label="Select Exam Type" value={selectedExamType} placeholder="-- Select Exam Type --" options={examTypeOptions} onchange={handleFilterChange}></lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="2" padding="around-small" class="slds-align-bottom">
+                                <lightning-button label="Load Students" variant="brand" onclick={handleLoadStudents} class="slds-w-100"></lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </lightning-card>
+
+                <template if:true={isLoading}>
+                    <div class="slds-is-relative slds-m-vertical_large">
+                        <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                    </div>
+                </template>
+
+                <template if:true={studentsForEntry.length}>
+                    <div class="slds-m-top_medium">
+                        <div class="slds-p-bottom_small slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <lightning-input label="Search by Roll No" type="search" onchange={handleSearch}></lightning-input>
+                        </div>
+
+                        <div class="list-container">
+                            <lightning-layout class="list-header slds-p-vertical_x-small">
+                                <lightning-layout-item size="3" padding="horizontal-small">Roll No</lightning-layout-item>
+                                <lightning-layout-item size="4" padding="horizontal-small">Student Name</lightning-layout-item>
+                                <lightning-layout-item size="2" padding="horizontal-small">Max Marks</lightning-layout-item>
+                                <lightning-layout-item size="3" padding="horizontal-small">Marks Obtained</lightning-layout-item>
+                            </lightning-layout>
+
+                            <template for:each={studentsForEntry} for:item="student">
+                                <lightning-layout key={student.studentId} class="list-row slds-p-vertical_small">
+                                    <lightning-layout-item size="3" padding="horizontal-small" class="slds-align-middle">{student.rollNumber}</lightning-layout-item>
+                                    <lightning-layout-item size="4" padding="horizontal-small" class="slds-align-middle">{student.studentName}</lightning-layout-item>
+                                    <lightning-layout-item size="2" padding="horizontal-small" class="slds-align-middle">{student.maximumMarks}</lightning-layout-item>
+                                    <lightning-layout-item size="3" padding="horizontal-small">
+                                        <lightning-input
+                                            type="number"
+                                            label="Marks"
+                                            variant="label-hidden"
+                                            value={student.marksObtained}
+                                            data-id={student.studentId}
+                                            onchange={handleMarksInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+        
+        <template if:false={isFacultyView}>
+            </template>
+    </lightning-card>
+    <template if:true={isModalOpen}>
+       </template>
+</template>

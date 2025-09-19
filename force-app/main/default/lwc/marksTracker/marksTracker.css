@@ -1,0 +1,23 @@
+.list-container {
+    border: 1px solid #dddbda;
+    border-radius: .25rem;
+}
+
+.list-header {
+    font-weight: bold;
+    background-color: #f3f2f2;
+    border-bottom: 1px solid #dddbda;
+}
+
+.list-row {
+    border-bottom: 1px solid #dddbda;
+}
+
+.list-row:last-child {
+    border-bottom: none;
+}
+
+.slds-align-middle {
+    display: flex;
+    align-items: center;
+}
