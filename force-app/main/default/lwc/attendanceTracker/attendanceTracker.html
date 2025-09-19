@@ -1,0 +1,83 @@
+<template>
+    <lightning-card title="Attendance Tracker" icon-name="standard:event">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="4" padding="around-small">
+                    <lightning-input type="date" label="Select Date" value={selectedDate} onchange={handleDateChange} required></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" padding="around-small">
+                    <lightning-combobox name="subject" label="Select Subject" value={selectedSubject} placeholder="-- Select a Subject --" options={subjectOptions} onchange={handleSubjectChange} required></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="2" padding="around-small" class="slds-align-bottom">
+                    <lightning-button label="Load Students" variant="brand" onclick={handleLoadStudents} class="slds-w-100"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <template if:true={studentsLoaded}>
+                <div class="slds-m-vertical_medium">
+                    <lightning-layout>
+                        <lightning-layout-item padding="around-small">
+                            <lightning-card variant="Narrow" title="Total Students"><div class="slds-p-horizontal_small slds-text-heading_large">{totalStudents}</div></lightning-card>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            <lightning-card variant="Narrow" title="Present"><div class="slds-p-horizontal_small slds-text-heading_large slds-text-color_success">{presentCount}</div></lightning-card>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="around-small">
+                            <lightning-card variant="Narrow" title="Absent"><div class="slds-p-horizontal_small slds-text-heading_large slds-text-color_error">{absentCount}</div></lightning-card>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <lightning-layout multiple-rows="true" vertical-align="end">
+                    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                        <lightning-input label="Search by Roll No" type="search" onchange={handleSearch}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="8" padding="around-small">
+                        <lightning-button-group class="slds-m-bottom_small">
+                            <lightning-button label="Mark All Present" onclick={handleMarkAllPresent}></lightning-button>
+                            <lightning-button label="Mark All Absent" onclick={handleMarkAllAbsent}></lightning-button>
+                            <lightning-button label="Reset" onclick={handleReset}></lightning-button>
+                        </lightning-button-group>
+                    </lightning-layout-item>
+                </lightning-layout>
+                
+                <div class="slds-m-top_medium tile-container">
+                    <lightning-layout multiple-rows="true">
+                        <template for:each={students} for:item="student">
+                            <lightning-layout-item key={student.studentId} size="12" small-device-size="6" medium-device-size="4" large-device-size="3" padding="around-small">
+                                <div class={student.tileClass} data-id={student.studentId} onclick={handleTileClick}>
+                                    <div class="slds-m-right_small">
+                                        <lightning-icon icon-name={student.iconName} size="small"></lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <p class="slds-text-heading_small">{student.studentName}</p>
+                                        <p class="slds-text-body_small">{student.rollNumber}</p>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </div>
+
+                <div class="slds-align_absolute-center slds-m-top_medium">
+                    <lightning-button label="Save Attendance" variant="brand" icon-name="utility:save" onclick={handleSave}></lightning-button>
+                </div>
+            </template>
+
+            <template if:true={historyData}>
+                 <div class="slds-m-top_large">
+                    <h2 class="slds-text-heading_medium slds-m-bottom_small">Attendance History for Selected Subject</h2>
+                    <lightning-datatable
+                        key-field="attendanceDate"
+                        data={historyData}
+                        columns={historyColumns}
+                        hide-checkbox-column>
+                    </lightning-datatable>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

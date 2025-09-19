@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-p-around_xx-small">
+        <lightning-combobox
+            label="Status"
+            variant="label-hidden"
+            value={value}
+            options={typeAttributes.options}
+            data-id={typeAttributes.studentId}
+            onchange={handleComboboxChange}
+        ></lightning-combobox>
+    </div>
+</template>

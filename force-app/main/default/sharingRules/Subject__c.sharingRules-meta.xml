@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Class_Incharge_Subject_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Class Incharge Subject Access</label>
+        <sharedTo>
+            <group>Class_Incharge</group>
+        </sharedTo>
+        <sharedFrom>
+            <role>Faculty</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>HOD_Subject_View</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>HOD Subject View</label>
+        <sharedTo>
+            <role>CEO</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>Faculty</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

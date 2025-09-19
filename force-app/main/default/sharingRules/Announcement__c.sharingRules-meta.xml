@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Announcement_Full_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Announcement Full Access</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <sharedFrom>
+            <role>Faculty</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

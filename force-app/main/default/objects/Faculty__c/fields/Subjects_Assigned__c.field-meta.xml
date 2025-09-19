@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subjects_Assigned__c</fullName>
+    <description>Subjects allocated to faculty</description>
+    <externalId>false</externalId>
+    <label>Subjects Assigned</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Usability Design of Software Application</fullName>
+                <default>false</default>
+                <label>Usability Design of Software Application</label>
+            </value>
+            <value>
+                <fullName>Financial Management</fullName>
+                <default>false</default>
+                <label>Financial Management</label>
+            </value>
+            <value>
+                <fullName>Introduction to IoT</fullName>
+                <default>false</default>
+                <label>Introduction to IoT</label>
+            </value>
+            <value>
+                <fullName>Advance Social, Text &amp; Media Analytics</fullName>
+                <default>false</default>
+                <label>Advance Social, Text &amp; Media Analytics</label>
+            </value>
+            <value>
+                <fullName>IT W/S (MATLAB)</fullName>
+                <default>false</default>
+                <label>IT W/S (MATLAB)</label>
+            </value>
+            <value>
+                <fullName>Major Project - 1</fullName>
+                <default>false</default>
+                <label>Major Project - 1</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>6</visibleLines>
+</CustomField>
