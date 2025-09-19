@@ -67,8 +67,27 @@
         </template>
         
         <template if:false={isFacultyView}>
-            </template>
+            <h2 slot="title" class="slds-card__header-title">My Marks</h2>
+            <div class="slds-p-horizontal_small">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                </template>
+                <template if:false={isLoading}>
+                    <template if:true={hasStudentMarks}>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={studentMarks}
+                            columns={studentColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </template>
+                    <template if:false={hasStudentMarks}>
+                        <div class="slds-align_absolute-center slds-p-around_medium">
+                            No marks have been recorded.
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </template>
     </lightning-card>
-    <template if:true={isModalOpen}>
-       </template>
 </template>

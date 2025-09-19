@@ -1,0 +1,71 @@
+<template>
+    <lightning-card title="Faculty Announcement Dashboard" icon-name="standard:announcement">
+        <div class="slds-p-around_medium">
+            <lightning-layout multiple-rows="true">
+
+                <lightning-layout-item size="12" medium-device-size="5" padding="around_medium">
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium">Create New Announcement</h2>
+
+                    <lightning-combobox
+                        name="type"
+                        label="Announcement Type"
+                        value={typeValue}
+                        options={typeOptions}
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small"
+                        required>
+                    </lightning-combobox>
+                    
+                    <lightning-input
+                        name="title"
+                        label="Announcement Title"
+                        value={titleValue}
+                        onchange={handleInputChange}
+                        class="slds-m-bottom_small"
+                        required>
+                    </lightning-input>
+                    
+                    <lightning-input-rich-text
+                        label="Message"
+                        name="description"
+                        value={descriptionValue}
+                        onchange={handleInputChange}
+                        message-when-value-missing="Message is required.">
+                    </lightning-input-rich-text>
+                    
+                    <lightning-button
+                        label="Post Announcement"
+                        variant="brand"
+                        onclick={handlePostClick}
+                        disabled={isLoading}
+                        class="slds-m-top_medium slds-float_right">
+                    </lightning-button>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="7" padding="around_medium">
+                     <h2 class="slds-text-heading_medium slds-m-bottom_medium">Your 5 Most Recent Announcements</h2>
+                     
+                     <template if:true={isLoading}>
+                         <lightning-spinner alternative-text="Loading..."></lightning-spinner>
+                     </template>
+                     
+                     <template if:false={isLoading}>
+                         <template for:each={recentAnnouncements} for:item="ann">
+                            <div key={ann.Id} class="slds-box slds-m-bottom_small">
+                                <p class="slds-text-body_small">
+                                    <lightning-formatted-date-time value={ann.Date__c} year="numeric" month="short" day="2-digit"></lightning-formatted-date-time>
+                                    <lightning-badge label={ann.Type__c} class="slds-m-left_small"></lightning-badge>
+                                </p>
+                                <p class="slds-text-heading_small slds-m-vertical_x-small">{ann.Name}</p>
+                                <lightning-formatted-rich-text value={ann.Description__c}></lightning-formatted-rich-text>
+                            </div>
+                         </template>
+                         <template if:true={noAnnouncements}>
+                            <p>You have not posted any announcements yet.</p>
+                         </template>
+                     </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,54 @@
+<template>
+    <lightning-card title="Attendance Record" icon-name="standard:event">
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <lightning-layout multiple-rows="true" vertical-align="end">
+                <lightning-layout-item size="12" medium-device-size="5" class="slds-p-right_small">
+                    <lightning-combobox
+                        label="Filter by Subject"
+                        value={subjectFilter}
+                        placeholder="-- All Subjects --"
+                        options={subjectOptions}
+                        onchange={handleSubjectChange}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="5" class="slds-p-right_small">
+                    <lightning-input
+                        label="Filter by Date"
+                        type="date"
+                        value={dateFilter}
+                        onchange={handleDateChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="2" class="slds-p-top_large">
+                    <lightning-button-group>
+                        <lightning-button label="Filter" variant="brand" onclick={handleFilterClick}></lightning-button>
+                        <lightning-button label="Clear" onclick={handleClearClick}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div class="slds-p-horizontal_small">
+            <template if:true={isLoading}>
+                <div class="slds-is-relative slds-m-vertical_large">
+                    <lightning-spinner alternative-text="Loading..." variant="brand" size="medium"></lightning-spinner>
+                </div>
+            </template>
+            
+            <template if:false={isLoading}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={data}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true">
+                </lightning-datatable>
+                <template if:true={noResults}>
+                    <p class="slds-text-align_center slds-p-around_medium">No records found for the selected criteria.</p>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

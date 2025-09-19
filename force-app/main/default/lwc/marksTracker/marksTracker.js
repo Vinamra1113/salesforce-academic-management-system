@@ -6,8 +6,6 @@ import getStudentsForMarksEntry from '@salesforce/apex/MarksController.getStuden
 import getStudentMarks from '@salesforce/apex/MarksController.getStudentMarks';
 import saveMarks from '@salesforce/apex/MarksController.saveMarks';
 
-// Datatable constants are no longer needed for the faculty view
-
 const STUDENT_COLUMNS = [
     { label: 'Subject', fieldName: 'SubjectName', type: 'text' },
     { label: 'Exam Type', fieldName: 'Exam_Type__c', type: 'text' },
@@ -25,16 +23,14 @@ export default class MarksTracker extends LightningElement {
 
     // Faculty properties
     @track studentsForEntry = [];
-    allStudentsForEntry = [];
+    allStudentsForEntry = []; // Master list for filtering
     selectedSubject;
     selectedExamType;
-    isModalOpen = false; // Note: Row actions are removed, so modal logic may need a new trigger if desired
 
     // Student properties
     @track studentMarks;
     studentColumns = STUDENT_COLUMNS;
 
-    // Getter for template condition
     get hasStudentMarks() { return this.studentMarks && this.studentMarks.length > 0; }
 
     @wire(getSubjects)
@@ -85,12 +81,19 @@ export default class MarksTracker extends LightningElement {
 
     handleSearch(event) {
         const searchTerm = event.target.value.toLowerCase();
-        this.studentsForEntry = this.allStudentsForEntry.filter(student =>
-            student.rollNumber.toLowerCase().includes(searchTerm)
-        );
+        
+        if (!this.allStudentsForEntry) {
+            this.studentsForEntry = [];
+            return;
+        }
+
+        this.studentsForEntry = this.allStudentsForEntry.filter(student => {
+            // This fix prevents crashes if a roll number is blank
+            const rollNumber = student.rollNumber || ''; 
+            return rollNumber.toLowerCase().includes(searchTerm);
+        });
     }
     
-    // NEW, more direct handler for the input fields
     handleMarksInputChange(event) {
         const studentId = event.target.dataset.id;
         const marks = event.target.value;
@@ -111,16 +114,14 @@ export default class MarksTracker extends LightningElement {
         this.isLoading = true;
         const marksToSave = this.allStudentsForEntry
             .filter(student => student.marksObtained !== null && student.marksObtained !== undefined)
-            .map(student => {
-                return {
-                    'sobjectType': 'Marks__c',
-                    'Id': student.markId,
-                    'Student__c': student.studentId,
-                    'Subject__c': this.selectedSubject,
-                    'Exam_Type__c': this.selectedExamType,
-                    'Marks_Obtained__c': student.marksObtained
-                };
-            });
+            .map(student => ({
+                'sobjectType': 'Marks__c',
+                'Id': student.markId,
+                'Student__c': student.studentId,
+                'Subject__c': this.selectedSubject,
+                'Exam_Type__c': this.selectedExamType,
+                'Marks_Obtained__c': student.marksObtained
+            }));
 
         if (marksToSave.length === 0) {
             this.showToast('Info', 'No new or updated marks to save.', 'info');
@@ -131,7 +132,7 @@ export default class MarksTracker extends LightningElement {
         saveMarks({ marksDataJSON: JSON.stringify(marksToSave) })
             .then(() => {
                 this.showToast('Success', 'Marks saved successfully.', 'success');
-                this.handleLoadStudents();
+                this.handleLoadStudents(); // Refresh data from server
             })
             .catch(error => this.showToast('Error', 'Failed to save marks: ' + error.body.message, 'error'))
             .finally(() => this.isLoading = false);

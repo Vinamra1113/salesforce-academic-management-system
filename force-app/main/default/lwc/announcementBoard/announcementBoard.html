@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="Campus Announcement Board" icon-name="standard:feed">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <div class="slds-is-relative slds-m-vertical_large">
+                    <lightning-spinner alternative-text="Loading Announcements..." variant="brand"></lightning-spinner>
+                </div>
+            </template>
+
+            <template for:each={announcements} for:item="ann">
+                <article key={ann.Id} class="slds-post slds-box slds-m-bottom_medium">
+                    <header class="slds-post__header slds-media">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:announcement" size="small"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                                <p>
+                                    Posted By: <strong>{ann.FacultyName}</strong>
+                                </p>
+                                <p class="slds-text-body_small">
+                                    <lightning-formatted-date-time
+                                        value={ann.Date__c}
+                                        year="numeric"
+                                        month="short"
+                                        day="2-digit">
+                                    </lightning-formatted-date-time>
+                                </p>
+                            </div>
+                        </div>
+                    </header>
+
+                    <div class="slds-post__content slds-text-longform slds-m-top_medium">
+                        <h3 class="slds-text-heading_medium slds-m-bottom_small">{ann.Name}</h3>
+                        <lightning-formatted-rich-text value={ann.Description__c}></lightning-formatted-rich-text>
+                    </div>
+
+                    <footer class="slds-post__footer slds-m-top_medium">
+                        <lightning-badge label={ann.Type__c}></lightning-badge>
+                    </footer>
+                </article>
+            </template>
+            
+            <template if:true={noAnnouncements}>
+                 <div class="slds-align_absolute-center slds-p-around_large">
+                    <p>There are no recent announcements.</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

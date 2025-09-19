@@ -1,0 +1,58 @@
+<template>
+    <lightning-card title="View Marks by Subject" icon-name="standard:assessment">
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <lightning-layout multiple-rows="true" vertical-align="end">
+                <lightning-layout-item size="12" medium-device-size="5" padding="around-small">
+                    <lightning-combobox
+                        name="subject"
+                        label="Select a Subject"
+                        value={selectedSubjectId}
+                        placeholder="-- Select Subject --"
+                        options={subjectOptions}
+                        onchange={handleSubjectChange}
+                        required>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="5" padding="around-small">
+                    <lightning-combobox
+                        name="examType"
+                        label="Filter by Exam Type (Optional)"
+                        value={selectedExamType}
+                        placeholder="-- All Exam Types --"
+                        options={examTypeOptions}
+                        onchange={handleExamTypeChange}
+                        disabled={isExamTypeFilterDisabled}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="2" padding="around-small" class="slds-p-top_large">
+                     <lightning-button
+                         label="Clear"
+                         onclick={handleClearClick}
+                         disabled={isClearButtonDisabled}>
+                     </lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <template if:true={showResults}>
+                <template if:true={isLoading}>
+                    <div class="slds-is-relative slds-m-vertical_large">
+                        <lightning-spinner alternative-text="Loading..." variant="brand"></lightning-spinner>
+                    </div>
+                </template>
+                <template if:false={isLoading}>
+                    <lightning-datatable
+                        key-field="Id"
+                        data={marksData}
+                        columns={columns}
+                        hide-checkbox-column="true">
+                    </lightning-datatable>
+                    <template if:true={noMarksFound}>
+                        <p class="slds-text-align_center slds-p-around_medium">No marks found for the selected criteria.</p>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

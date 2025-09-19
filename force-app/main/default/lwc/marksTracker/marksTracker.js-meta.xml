@@ -2,17 +2,26 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <isExposed>true</isExposed>
+
     <targets>
+        <!-- Standard Lightning Pages -->
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+
+        <!-- Experience Builder (Communities) -->
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
     </targets>
+
     <targetConfigs>
-        <targetConfig targets="lightning__AppPage, lightning__HomePage">
+        <!-- Expose design property for App Builder + Experience Builder -->
+        <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage,lightningCommunity__Default">
             <property
                 name="isFacultyView"
                 type="Boolean"
                 label="Display Faculty View"
-                description="If checked, the component will show the marks entry view for faculty. Otherwise, it shows the student view."
+                description="If checked, component shows marks entry for faculty; otherwise student view."
                 default="true"/>
         </targetConfig>
     </targetConfigs>
